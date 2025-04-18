@@ -1,0 +1,28 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.adminAddCategory = void 0;
+const category_module_1 = require("./category.module");
+const responseHandler_1 = require("../../responseHandler");
+const adminAddCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { category } = req.body;
+        const categoryList = new category_module_1.categoryModel({ category });
+        yield categoryList.save();
+        (0, responseHandler_1.createResponse)(res, 200, true, "Successfully category Added", categoryList);
+    }
+    catch (error) {
+        (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
+        return;
+    }
+});
+exports.adminAddCategory = adminAddCategory;
+//# sourceMappingURL=category.controller.js.map

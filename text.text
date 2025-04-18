@@ -1,0 +1,115 @@
+  const orders = await vendorProductOrderList.aggregate([
+            // {
+            //     $match: {
+            //         createdAt: { $gte: twentyFourHoursAgo } // Only today's entries
+            //     }
+            // },
+            { $unwind: "$orders" },
+            { $unwind: "$orders.products" },
+
+            {
+                $group: {
+                    _id: "$orders.products.productId",
+                    totalQuantitySold: { $sum: "$orders.products.quantity" }
+                }
+            },
+            {
+                $lookup: {
+                    from: "vendorproducts", // match collection name for products
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "productInfo"
+                }
+            },
+            {
+                $lookup: {
+                    from: "userplaceorders", // match collection name for products
+                    localField: "orders.userId",
+                    foreignField: "userId",
+                    as: "userPlaceOrders"
+                }
+            },
+            // { $unwind: "$userPlaceOrders" },
+            { $unwind: "$productInfo" },
+            {
+                $group:{
+                    _id: {
+                        vendorId:"$productInfo.vendorId",
+                        productId:"$productInfo._id"
+                    },
+                    productName: { $first:"$productInfo.name"},
+                    price: {$first:"$productInfo.price"},
+                    createdAt: {$first:"$userPlaceOrders.createdAt"},
+                }
+            },
+            {
+                $group:{
+                    _id: "$_id.vendorId",
+                    vendorId: { $first: "$_id.vendorId" },
+                    
+                    products:{
+                        $push:{
+                            productId: "$_id.productId",
+                            productName: "$productName",
+                            price: "$price",
+                            createdAt:"$createdAt",
+                            totalQuantitySold: 1,
+                        },
+                    },
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    vendorId: 1,
+                    totalQuantitySold: 1,
+                    products: 1,
+                }
+            },
+            {
+                $sort: { totalQuantitySold: -1 } // Sort by most sold products
+            }
+        ]);
+
+
+
+        
+        // const orders = await vendorProductOrderList.aggregate([
+        //     // {
+        //     //     $match: {
+        //     //         createdAt: { $gte: twentyFourHoursAgo } // Only today's entries
+        //     //     }
+        //     // },
+        //     { $unwind: "$orders" },
+        //     { $unwind: "$orders.products" },
+
+        //     {
+        //         $group: {
+        //             _id: "$orders.products.productId",
+        //             totalQuantitySold: { $sum: "$orders.products.quantity" }
+        //         }
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: "vendorproducts", // match collection name for products
+        //             localField: "_id",
+        //             foreignField: "_id",
+        //             as: "productInfo"
+        //         }
+        //     },
+        //     { $unwind: "$productInfo" },
+
+        //     {
+        //         $project: {
+        //             _id: 0,
+        //             vendorId: "$productInfo.vendorId",
+        //             productId: "$_id",
+        //             productName: "$productInfo.name",
+        //             price: "$productInfo.price",
+        //             totalQuantitySold: 1
+        //         }
+        //     },
+        //     {
+        //         $sort: { totalQuantitySold: -1 } // Sort by most sold products
+        //     }
+        // ]);
