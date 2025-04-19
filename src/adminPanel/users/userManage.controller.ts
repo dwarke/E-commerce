@@ -104,7 +104,7 @@ export const adminUserOrderView = async (req: Request, res: Response): Promise<v
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
         return
-    }
+    };
 };
 
 export const adminVieWFeedback = async (req: Request, res: Response): Promise<void> => {
@@ -115,6 +115,6 @@ export const adminVieWFeedback = async (req: Request, res: Response): Promise<vo
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
         return
-    }
-}
+    };
+};
 

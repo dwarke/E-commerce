@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.adminAddCategory = void 0;
+exports.getCategory = exports.addCategory = void 0;
 const category_module_1 = require("./category.module");
 const responseHandler_1 = require("../../responseHandler");
-const adminAddCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { category } = req.body;
         const categoryList = new category_module_1.categoryModel({ category });
@@ -24,5 +24,16 @@ const adminAddCategory = (req, res) => __awaiter(void 0, void 0, void 0, functio
         return;
     }
 });
-exports.adminAddCategory = adminAddCategory;
+exports.addCategory = addCategory;
+const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const category = yield category_module_1.categoryModel.find({});
+        (0, responseHandler_1.createResponse)(res, 200, true, "Successfully category Added", category);
+    }
+    catch (error) {
+        (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
+        return;
+    }
+});
+exports.getCategory = getCategory;
 //# sourceMappingURL=category.controller.js.map

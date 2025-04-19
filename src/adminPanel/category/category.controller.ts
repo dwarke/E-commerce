@@ -4,13 +4,24 @@ import { createResponse } from "../../responseHandler";
 
 //--------------------category Management -----------------//
 
-export const adminAddCategory = async (req: Request, res: Response): Promise<void> => {
+export const addCategory = async (req: Request, res: Response): Promise<void> => {
     try {
         const { category } = req.body;
         const categoryList = new categoryModel({ category });
         await categoryList.save();
         createResponse(res, 200, true, "Successfully category Added", categoryList);
 
+    } catch (error) {
+        createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
+        return
+    }
+}
+
+export const getCategory = async(req:Request,res:Response):Promise<void>=>{
+    try {
+        const category = await categoryModel.find({});
+        createResponse(res, 200, true, "Successfully category Added", category);
+        
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
         return

@@ -32,7 +32,6 @@ const userOrderSchema = new Schema({
         enum: ['pending', 'approve', 'cancel'],
         default: 'pending'
     }
-   
-}, { timestamps: true, versionKey:false })
+}, { timestamps: true, versionKey:false });
 
 export const userOrderModel = model<userOrder>('userPlaceOrder', userOrderSchema);

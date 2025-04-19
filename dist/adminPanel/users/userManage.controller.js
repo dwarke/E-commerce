@@ -118,6 +118,7 @@ const adminUserOrderView = (req, res) => __awaiter(void 0, void 0, void 0, funct
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
         return;
     }
+    ;
 });
 exports.adminUserOrderView = adminUserOrderView;
 const adminVieWFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -129,6 +130,7 @@ const adminVieWFeedback = (req, res) => __awaiter(void 0, void 0, void 0, functi
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
         return;
     }
+    ;
 });
 exports.adminVieWFeedback = adminVieWFeedback;
 //# sourceMappingURL=userManage.controller.js.map
