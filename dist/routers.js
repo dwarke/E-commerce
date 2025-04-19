@@ -22,6 +22,7 @@ const cart_router_1 = __importDefault(require("./user/shoppingCart/cart.router")
 const rating_router_2 = __importDefault(require("./user/ratingAndReview/rating.router"));
 const order_router_2 = __importDefault(require("./user/order/order.router"));
 const wishList_routing_1 = __importDefault(require("./user/wishList/wishList.routing"));
+const feedback_router_1 = __importDefault(require("./user/feedback/feedback.router"));
 router.use('/admin', auth_router_1.default);
 router.use('/admin/dashboard', dashboard_router_1.default);
 router.use('/admin/report', report_router_1.default);
@@ -39,5 +40,6 @@ router.use('/user/userCart', cart_router_1.default);
 router.use('/user/userProductRating', rating_router_2.default);
 router.use('/user/userOrder', order_router_2.default);
 router.use('/user/userWishlist', wishList_routing_1.default);
+router.use('/user/websiteFeedback', feedback_router_1.default);
 exports.default = router;
 //# sourceMappingURL=routers.js.map

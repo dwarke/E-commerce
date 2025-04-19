@@ -9,5 +9,6 @@ router.post('/adminUserBlockUnblock/:id', auth_middleware_2.checkAuthorization, 
 router.post('/adminUserBlocked/:id', auth_middleware_2.checkAuthorization, auth_middleware_1.adminRole, userManage_controller_1.adminUserBlocked);
 router.post('/adminUserUpdate/:id', auth_middleware_2.checkAuthorization, auth_middleware_1.adminRole, userManage_controller_1.adminUserUpdate);
 router.post('/adminUserOrderView', auth_middleware_2.checkAuthorization, auth_middleware_1.adminRole, userManage_controller_1.adminUserOrderView);
+router.post('/adminVieWFeedback', auth_middleware_2.checkAuthorization, auth_middleware_1.adminRole, userManage_controller_1.adminVieWFeedback);
 exports.default = router;
 //# sourceMappingURL=userManage.router.js.map

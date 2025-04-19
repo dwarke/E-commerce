@@ -19,7 +19,7 @@ const responseHandler_1 = require("../../responseHandler");
 const userGetProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
-        const { vendorId, minPrice, maxPrice, searchWord, category, sortBy, sortOrder, price, page = 1, limit = 10 } = req.body;
+        const { vendorId, minPrice, maxPrice, searchWord, category, sortBy, sortOrder, price, page, limit = 10 } = req.body;
         const pageNumber = Math.max(Number(page), 1);
         const limitNumber = Number(limit);
         const skip = (pageNumber - 1) * limitNumber;
@@ -58,9 +58,7 @@ const userGetProduct = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         ;
         pipeline.push({
-            $match: {
-                status: 'approve'
-            }
+            $match: { status: 'approve' }
         }, {
             $lookup: {
                 from: "productreviews",
@@ -73,11 +71,8 @@ const userGetProduct = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 avgRating: { $avg: "$reviews.rating" }
             }
         }, {
-            $project: {
-                reviews: 0
-            }
-        });
-        pipeline.push({
+            $project: { reviews: 0 }
+        }, {
             $addFields: {
                 popularity: {
                     $switch: {
@@ -89,8 +84,7 @@ const userGetProduct = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     }
                 }
             }
-        });
-        pipeline.push({
+        }, {
             $lookup: {
                 from: "admincategories",
                 localField: "category",
@@ -127,12 +121,20 @@ const userGetProduct = (req, res) => __awaiter(void 0, void 0, void 0, function*
             product_module_1.productModel.aggregate(countPipeline),
         ]);
         const totalCount = ((_b = countResult[0]) === null || _b === void 0 ? void 0 : _b.totalCount) || 0;
-        (0, responseHandler_1.createResponse)(res, 200, true, "All Products", { products, totalCount, page: pageNumber });
+        const totalPages = Math.ceil(totalCount / limitNumber);
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Products", {
+            products,
+            totalCount,
+            totalPages,
+            currentPage: pageNumber,
+            limit: limitNumber,
+        });
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
         return;
     }
+    ;
 });
 exports.userGetProduct = userGetProduct;
 //# sourceMappingURL=home.controller.js.map

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import userRegisterModel from '../../vendorPanel/auth/auth.module'
 import { userOrderModel } from "../../user/order/order.module";
 import { createResponse } from "../../responseHandler";
+import { feedbackModel } from "../../user/feedback/feedback.module";
 
 export const adminUserBlockUnblock = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -62,7 +63,7 @@ export const adminUserOrderView = async (req: Request, res: Response): Promise<v
                     _id: {
                         productId: '$products.productId',
                         name: '$products.name',
-                        userId: '$userId' 
+                        userId: '$userId'
                     },
                     quantity: { $sum: '$products.quantity' },
                     totalAmount: { $sum: '$products.totalPrice' },
@@ -76,8 +77,8 @@ export const adminUserOrderView = async (req: Request, res: Response): Promise<v
                 $group: {
                     _id: '$_id.userId',
                     userId: { $first: '$_id.userId' },
-                    products:{
-                        $push:{
+                    products: {
+                        $push: {
                             productId: '$_id.productId',
                             name: '$_id.name',
                             quantity: '$quantity',
@@ -90,15 +91,26 @@ export const adminUserOrderView = async (req: Request, res: Response): Promise<v
                 }
             },
             {
-                $project:{
+                $project: {
                     _id: 0,
-                    userId:1,
-                    products:1
+                    userId: 1,
+                    products: 1
                 }
             }
         ])
         console.log("userOrderData--------", userOrderData);
         createResponse(res, 200, true, "All users Order List", userOrderData)
+
+    } catch (error) {
+        createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
+        return
+    }
+};
+
+export const adminVieWFeedback = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const alreadyFeedBack = await feedbackModel.find({});
+        createResponse(res, 200, true, "All Website`s Feedback", alreadyFeedBack);
 
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);

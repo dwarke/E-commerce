@@ -6,5 +6,6 @@ const product_middleware_1 = require("../product/product.middleware");
 const auth_middleware_1 = require("../auth/auth.middleware");
 const report_controller_1 = require("./report.controller");
 router.post('/vendorProductReport', auth_middleware_1.checkAuthorization, auth_middleware_1.userBlocked, product_middleware_1.vendorRole, report_controller_1.vendorProductReport);
+router.post('/getWebsiteFeedback', auth_middleware_1.checkAuthorization, auth_middleware_1.userBlocked, product_middleware_1.vendorRole, report_controller_1.getWebsiteFeedback);
 exports.default = router;
 //# sourceMappingURL=report.router.js.map

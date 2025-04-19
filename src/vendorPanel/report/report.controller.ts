@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { userOrderModel } from "../../user/order/order.module";
 import { createResponse } from "../../responseHandler";
 import mongoose from "mongoose";
+import { feedbackModel } from "../../user/feedback/feedback.module";
 
 
 export const vendorProductReport = async (req: Request, res: Response): Promise<void> => {
@@ -63,3 +64,14 @@ export const vendorProductReport = async (req: Request, res: Response): Promise<
         return
     }
 };
+
+export const getWebsiteFeedback = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const alreadyFeedBack = await feedbackModel.find({});
+        createResponse(res, 200, true, "All Website`s Feedback", alreadyFeedBack);
+
+    } catch (error) {
+        createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
+        return
+    }
+}

@@ -6,7 +6,7 @@ import { createResponse } from "../../responseHandler";
 
 export const userGetProduct = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { vendorId, minPrice, maxPrice, searchWord, category, sortBy, sortOrder, price, page = 1 , limit = 10 } = req.body;
+        const { vendorId, minPrice, maxPrice, searchWord, category, sortBy, sortOrder, price, page, limit = 10 } = req.body;
 
         // Convert pagination values to numbers
         const pageNumber = Math.max(Number(page), 1);
@@ -15,7 +15,6 @@ export const userGetProduct = async (req: Request, res: Response): Promise<void>
 
         // MongoDB Aggregation Pipeline
         const pipeline: any[] = [];
-
         //  Search by name using $regex (case-insensitive)
         if (searchWord) {
             pipeline.push({
@@ -53,9 +52,7 @@ export const userGetProduct = async (req: Request, res: Response): Promise<void>
 
         pipeline.push(
             {
-                $match:{
-                    status:'approve'
-                }
+                $match: { status: 'approve' }
             },
             {
                 $lookup: {
@@ -71,28 +68,22 @@ export const userGetProduct = async (req: Request, res: Response): Promise<void>
                 }
             },
             {
-                $project: {
-                    reviews: 0
-                }
+                $project: { reviews: 0 }
             },
-        );
-
-        pipeline.push({
-            $addFields: {
-                popularity: {
-                    $switch: {
-                        branches: [
-                            { case: { $gte: ["$avgRating", 4.5] }, then: "high" },
-                            { case: { $gte: ["$avgRating", 3] }, then: "middle" },
-                        ],
-                        default: "low"
+            {
+                $addFields: {
+                    popularity: {
+                        $switch: {
+                            branches: [
+                                { case: { $gte: ["$avgRating", 4.5] }, then: "high" },
+                                { case: { $gte: ["$avgRating", 3] }, then: "middle" },
+                            ],
+                            default: "low"
+                        }
                     }
                 }
-            }
-        });
-
-        //  Populate Category and Remove Unnecessary Fields
-        pipeline.push(
+            },
+            //  Populate Category and Remove Unnecessary Fields
             {
                 $lookup: {
                     from: "admincategories",
@@ -142,11 +133,17 @@ export const userGetProduct = async (req: Request, res: Response): Promise<void>
 
         // Extract total count
         const totalCount = countResult[0]?.totalCount || 0;
-
-        createResponse(res, 200, true, "All Products", { products, totalCount, page: pageNumber });
+        const totalPages = Math.ceil(totalCount / limitNumber);
+        createResponse(res, 200, true, "All Products", {
+            products,
+            totalCount,
+            totalPages,
+            currentPage: pageNumber,
+            limit: limitNumber,
+        });
 
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
-        return
-    }
-}
+        return;
+    };
+};

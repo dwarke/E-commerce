@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.adminUserOrderView = exports.adminUserUpdate = exports.adminUserBlocked = exports.adminUserBlockUnblock = void 0;
+exports.adminVieWFeedback = exports.adminUserOrderView = exports.adminUserUpdate = exports.adminUserBlocked = exports.adminUserBlockUnblock = void 0;
 const auth_module_1 = __importDefault(require("../../vendorPanel/auth/auth.module"));
 const order_module_1 = require("../../user/order/order.module");
 const responseHandler_1 = require("../../responseHandler");
+const feedback_module_1 = require("../../user/feedback/feedback.module");
 const adminUserBlockUnblock = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params._id;
@@ -119,4 +120,15 @@ const adminUserOrderView = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.adminUserOrderView = adminUserOrderView;
+const adminVieWFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const alreadyFeedBack = yield feedback_module_1.feedbackModel.find({});
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Website`s Feedback", alreadyFeedBack);
+    }
+    catch (error) {
+        (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
+        return;
+    }
+});
+exports.adminVieWFeedback = adminVieWFeedback;
 //# sourceMappingURL=userManage.controller.js.map

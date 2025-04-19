@@ -23,6 +23,7 @@ import userShoppingCartRouter from './user/shoppingCart/cart.router'
 import userRatingAndReviewRouter from './user/ratingAndReview/rating.router'
 import userOrderRouter from './user/order/order.router'
 import userProductWishlist from './user/wishList/wishList.routing'
+import websiteFeedback from './user/feedback/feedback.router'
 
 
  //   ------- adminPanel ---------
@@ -49,6 +50,7 @@ router.use('/user/userCart',userShoppingCartRouter);
 router.use('/user/userProductRating',userRatingAndReviewRouter);
 router.use('/user/userOrder',userOrderRouter);
 router.use('/user/userWishlist',userProductWishlist)
+router.use('/user/websiteFeedback',websiteFeedback)
 
 
 export default router;

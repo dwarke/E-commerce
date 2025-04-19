@@ -11,7 +11,7 @@ import { addProduct, deleteProduct, updateProduct, viewProduct } from './product
 router.post('/addProduct', checkAuthorization , userBlocked, vendorRole, upload.array('images', 5),validateRequest(productValidation), addProduct);
 router.post('/deleteProduct/:id', checkAuthorization , userBlocked, vendorRole, deleteProduct);
 router.post('/updateProduct/:id', checkAuthorization , userBlocked, vendorRole, upload.array('images', 5), updateProduct);
-router.get('/viewProduct', checkAuthorization , userBlocked, vendorRole, upload.array('images', 5), viewProduct);
+router.get('/viewProduct', checkAuthorization , userBlocked, vendorRole, viewProduct);
 
 
 export default router

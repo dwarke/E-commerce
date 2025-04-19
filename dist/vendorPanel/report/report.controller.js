@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.vendorProductReport = void 0;
+exports.getWebsiteFeedback = exports.vendorProductReport = void 0;
 const order_module_1 = require("../../user/order/order.module");
 const responseHandler_1 = require("../../responseHandler");
 const mongoose_1 = __importDefault(require("mongoose"));
+const feedback_module_1 = require("../../user/feedback/feedback.module");
 const vendorProductReport = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -72,4 +73,15 @@ const vendorProductReport = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.vendorProductReport = vendorProductReport;
+const getWebsiteFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const alreadyFeedBack = yield feedback_module_1.feedbackModel.find({});
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Website`s Feedback", alreadyFeedBack);
+    }
+    catch (error) {
+        (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
+        return;
+    }
+});
+exports.getWebsiteFeedback = getWebsiteFeedback;
 //# sourceMappingURL=report.controller.js.map
