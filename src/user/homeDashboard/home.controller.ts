@@ -6,10 +6,10 @@ import { createResponse } from "../../responseHandler";
 
 export const userGetProduct = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { vendorId, minPrice, maxPrice, searchWord, category, sortBy, sortOrder, price, page = 1, limit = 10 } = req.body;
+        const { vendorId, minPrice, maxPrice, searchWord, category, sortBy, sortOrder, price, page = 1 , limit = 10 } = req.body;
 
         // Convert pagination values to numbers
-        const pageNumber = Number(page);
+        const pageNumber = Math.max(Number(page), 1);
         const limitNumber = Number(limit);
         const skip = (pageNumber - 1) * limitNumber;
 
@@ -21,27 +21,27 @@ export const userGetProduct = async (req: Request, res: Response): Promise<void>
             pipeline.push({
                 $match: { name: { $regex: searchWord, $options: "i" } },
             });
-        }
+        };
 
         //  Filter by Vendor
         if (vendorId) {
             pipeline.push({
                 $match: { vendorId: new mongoose.Types.ObjectId(vendorId) },
             });
-        }
+        };
 
         //  Filter by Category
         if (category) {
             pipeline.push({
                 $match: { category: new mongoose.Types.ObjectId(category) },
             });
-        }
+        };
 
         if (price) {
             pipeline.push({
                 $match: { price: Number(price) },
             });
-        }
+        };
 
         //  Filter by Price Range
         if (minPrice || maxPrice) {
@@ -49,7 +49,7 @@ export const userGetProduct = async (req: Request, res: Response): Promise<void>
             if (minPrice) priceFilter.$gte = Number(minPrice);
             if (maxPrice) priceFilter.$lte = Number(maxPrice);
             pipeline.push({ $match: { price: priceFilter } });
-        }
+        };
 
         pipeline.push(
             {

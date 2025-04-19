@@ -20,7 +20,7 @@ const userGetProduct = (req, res) => __awaiter(void 0, void 0, void 0, function*
     var _a, _b;
     try {
         const { vendorId, minPrice, maxPrice, searchWord, category, sortBy, sortOrder, price, page = 1, limit = 10 } = req.body;
-        const pageNumber = Number(page);
+        const pageNumber = Math.max(Number(page), 1);
         const limitNumber = Number(limit);
         const skip = (pageNumber - 1) * limitNumber;
         const pipeline = [];
@@ -29,21 +29,25 @@ const userGetProduct = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 $match: { name: { $regex: searchWord, $options: "i" } },
             });
         }
+        ;
         if (vendorId) {
             pipeline.push({
                 $match: { vendorId: new mongoose_1.default.Types.ObjectId(vendorId) },
             });
         }
+        ;
         if (category) {
             pipeline.push({
                 $match: { category: new mongoose_1.default.Types.ObjectId(category) },
             });
         }
+        ;
         if (price) {
             pipeline.push({
                 $match: { price: Number(price) },
             });
         }
+        ;
         if (minPrice || maxPrice) {
             const priceFilter = {};
             if (minPrice)
@@ -52,6 +56,7 @@ const userGetProduct = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 priceFilter.$lte = Number(maxPrice);
             pipeline.push({ $match: { price: priceFilter } });
         }
+        ;
         pipeline.push({
             $match: {
                 status: 'approve'
