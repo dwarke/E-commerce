@@ -6,7 +6,7 @@ import { feedbackModel } from "../../user/feedback/feedback.module";
 
 export const adminUserBlockUnblock = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = req.params._id;
+        const id = req.params.id;
         const user = await userRegisterModel.findOne({ _id: id });
         if (!user) {
             createResponse(res, 400, true, "Invalid User");

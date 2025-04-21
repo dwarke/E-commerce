@@ -16,7 +16,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         const saltRouter = 10;
         const hashPassword = await bcrypt.hash(password, saltRouter);
         const role = 'vendor'
-            const user = new userRegisterModel({ name, email, password: hashPassword, role, phone, address, genderCategory, status: 'pending' });
+        const user = new userRegisterModel({ name, email, password: hashPassword, role, phone, address, genderCategory, status: 'pending' });
         await user.save();
         createResponse(res, 200, true, "Successfully Register", user);
 
@@ -29,9 +29,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 export const login = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password } = req.body;
-        const data = await userRegisterModel.findOne({ email })
+        const data = await userRegisterModel.findOne({ email, role: 'vendor' })
         if (!data) {
-            createResponse(res, 400, false, "User is not Exist")
+            createResponse(res, 400, false, "vendor is not Exist")
             return
         }
         const comparePassword = await bcrypt.compare(password, data.password);
@@ -135,7 +135,7 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
 export const profile = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.user?._id;
-        const { name, email, address,genderCategory, phone } = req.body;
+        const { name, email, address, genderCategory, phone } = req.body;
 
         const userUpdate = await userRegisterModel.findOneAndUpdate({ _id: userId }, { name, email, address, genderCategory, phone }, { new: true });
         createResponse(res, 200, true, "Logged out successfully", userUpdate)

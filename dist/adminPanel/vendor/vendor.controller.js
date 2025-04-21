@@ -12,11 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.vendorProducts = exports.vendorProductStatus = exports.adminVendorApprove = void 0;
+exports.vendorProducts = exports.vendorProductStatus = exports.vendorAllProducts = exports.adminVendorApprove = exports.adminViewVendor = void 0;
 const auth_module_1 = __importDefault(require("../../vendorPanel/auth/auth.module"));
 const responseHandler_1 = require("../../responseHandler");
 const product_module_1 = require("../../vendorPanel/product/product.module");
 const order_module_1 = require("../../user/order/order.module");
+const auth_module_2 = __importDefault(require("../../vendorPanel/auth/auth.module"));
+const adminViewVendor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const vendors = yield auth_module_2.default.find({ role: 'vendor' }).sort({ 'createdAt': -1 });
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Vendors", vendors);
+    }
+    catch (error) {
+        (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
+        return;
+    }
+});
+exports.adminViewVendor = adminViewVendor;
 const adminVendorApprove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;
@@ -52,6 +64,17 @@ const adminVendorApprove = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.adminVendorApprove = adminVendorApprove;
+const vendorAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const products = yield product_module_1.productModel.find({}).sort({ 'createdAt': -1 });
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Vendor`s Products", products);
+    }
+    catch (error) {
+        (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
+        return;
+    }
+});
+exports.vendorAllProducts = vendorAllProducts;
 const vendorProductStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;

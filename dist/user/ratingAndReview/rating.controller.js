@@ -8,9 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getRatingReviews = exports.deleteRatingReviews = exports.addRatingReviews = void 0;
 const rating_module_1 = require("./rating.module");
+const product_module_1 = require("../../vendorPanel/product/product.module");
+const auth_module_1 = __importDefault(require("../../vendorPanel/auth/auth.module"));
 const responseHandler_1 = require("../../responseHandler");
 const addRatingReviews = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -18,6 +23,12 @@ const addRatingReviews = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const id = req.params.id;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
         const { rating, review } = req.body;
+        const product = yield product_module_1.productModel.findOne({ _id: id, status: 'approve' });
+        const vendorProduct = yield auth_module_1.default.findOne({ _id: product === null || product === void 0 ? void 0 : product.vendorId, isBlocked: false });
+        if (!product || !vendorProduct) {
+            (0, responseHandler_1.createResponse)(res, 404, false, "product Are not exist");
+            return;
+        }
         const productReview = yield rating_module_1.productReviewModel.findOne({ userId, productId: id });
         if (productReview) {
             const updateRatingAndReview = yield rating_module_1.productReviewModel.findOneAndUpdate({ userId, productId: id }, { review, rating }, { new: true });

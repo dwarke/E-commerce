@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { productReviewModel } from './rating.module'
-import userShoppingModel from '../shoppingCart/cart.module'
+import { productModel } from "../../vendorPanel/product/product.module";
+import vendorRegisterModel from '../../vendorPanel/auth/auth.module';
 import { createResponse } from "../../responseHandler";
 
 
@@ -9,6 +10,15 @@ export const addRatingReviews = async (req: Request, res: Response): Promise<voi
         const id = req.params.id;
         const userId = req.user?._id;
         const { rating, review } = req.body;
+
+
+        const product = await productModel.findOne({ _id: id, status: 'approve' })
+        const vendorProduct = await vendorRegisterModel.findOne({_id:product?.vendorId, isBlocked:false})
+        
+        if (!product || !vendorProduct) {
+            createResponse(res, 404, false, "product Are not exist");
+            return
+        }
 
         const productReview = await productReviewModel.findOne({ userId, productId: id });
         if(productReview){

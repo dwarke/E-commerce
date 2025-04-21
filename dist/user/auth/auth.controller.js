@@ -42,7 +42,7 @@ exports.register = register;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        const data = yield auth_module_1.default.findOne({ email });
+        const data = yield auth_module_1.default.findOne({ email, role: 'user' });
         if (!data) {
             (0, responseHandler_1.createResponse)(res, 400, false, "User is not Exist");
             return;
@@ -50,22 +50,10 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const comparePassword = yield bcryptjs_1.default.compare(password, data.password);
         if (!comparePassword)
             (0, responseHandler_1.createResponse)(res, 404, false, "In valid password");
-        if (data.role === 'vendor') {
-            if (data.status === 'approve') {
-                const userObj = data.toObject();
-                const token = (0, auth_middleware_1.createToken)({ _id: String(userObj._id), email: userObj.email });
-                (0, responseHandler_1.createResponse)(res, 200, true, "You are Login", token);
-                return;
-            }
-            (0, responseHandler_1.createResponse)(res, 404, false, "vendor is not approve");
-            return;
-        }
-        else {
-            const userObj = data.toObject();
-            const token = (0, auth_middleware_1.createToken)({ _id: String(userObj._id), email: userObj.email });
-            (0, responseHandler_1.createResponse)(res, 200, true, "You are Login", token);
-            return;
-        }
+        const userObj = data.toObject();
+        const token = (0, auth_middleware_1.createToken)({ _id: String(userObj._id), email: userObj.email });
+        (0, responseHandler_1.createResponse)(res, 200, true, "You are Login", token);
+        return;
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);

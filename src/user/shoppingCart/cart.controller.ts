@@ -14,7 +14,7 @@ export const addShoppingCard = async (req: Request, res: Response): Promise<void
         const product = await productModel.findOne({ _id: productId, status: 'approve' })
         const vendorProduct = await userRegisterModel.findOne({_id:product?.vendorId, isBlocked:false})
         
-        if (!product && !vendorProduct) {
+        if (!product || !vendorProduct) {
             createResponse(res, 404, false, "product Are not exist");
             return
         }

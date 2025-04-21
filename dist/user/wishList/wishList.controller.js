@@ -14,13 +14,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getWishlist = exports.addWishlist = void 0;
 const wishList_module_1 = require("./wishList.module");
+const product_module_1 = require("../../vendorPanel/product/product.module");
 const responseHandler_1 = require("../../responseHandler");
+const auth_module_1 = __importDefault(require("../../vendorPanel/auth/auth.module"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const addWishlist = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const id = req.params.id;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
+        const product = yield product_module_1.productModel.findOne({ _id: id, status: 'approve' });
+        const vendorProduct = yield auth_module_1.default.findOne({ _id: product === null || product === void 0 ? void 0 : product.vendorId, isBlocked: false });
+        if (!product || !vendorProduct) {
+            (0, responseHandler_1.createResponse)(res, 404, false, "product Are not exist");
+            return;
+        }
         const wishlist = yield wishList_module_1.userWishlistModel.findOne({ userId });
         if (!wishlist) {
             const userWishlist = new wishList_module_1.userWishlistModel({ userId, productId: id });

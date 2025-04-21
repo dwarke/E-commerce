@@ -19,7 +19,7 @@ const responseHandler_1 = require("../../responseHandler");
 const feedback_module_1 = require("../../user/feedback/feedback.module");
 const adminUserBlockUnblock = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const id = req.params._id;
+        const id = req.params.id;
         const user = yield auth_module_1.default.findOne({ _id: id });
         if (!user) {
             (0, responseHandler_1.createResponse)(res, 400, true, "Invalid User");

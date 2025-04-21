@@ -29,29 +29,19 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 export const login = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password } = req.body;
-        const data = await userRegisterModel.findOne({ email })
+        const data = await userRegisterModel.findOne({ email, role: 'user' })
         if (!data) {
             createResponse(res, 400, false, "User is not Exist")
             return
         }
         const comparePassword = await bcrypt.compare(password, data.password);
         if (!comparePassword) createResponse(res, 404, false, "In valid password");
-        if (data.role === 'vendor') {
-            if (data.status === 'approve') {
-                const userObj = data.toObject();
-                const token = createToken({ _id: String(userObj._id), email: userObj.email });
-                createResponse(res, 200, true, "You are Login", token)
-                return
-            }
-            createResponse(res, 404, false, "vendor is not approve")
-            return
-        }
-        else {
+      
             const userObj = data.toObject();
             const token = createToken({ _id: String(userObj._id), email: userObj.email });
             createResponse(res, 200, true, "You are Login", token)
             return
-        }
+        
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message)
         return

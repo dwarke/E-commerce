@@ -43,9 +43,9 @@ exports.register = register;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        const data = yield auth_module_1.default.findOne({ email });
+        const data = yield auth_module_1.default.findOne({ email, role: 'vendor' });
         if (!data) {
-            (0, responseHandler_1.createResponse)(res, 400, false, "User is not Exist");
+            (0, responseHandler_1.createResponse)(res, 400, false, "vendor is not Exist");
             return;
         }
         const comparePassword = yield bcryptjs_1.default.compare(password, data.password);

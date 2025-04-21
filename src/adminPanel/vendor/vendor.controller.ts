@@ -3,9 +3,22 @@ import userRegisterModel from '../../vendorPanel/auth/auth.module'
 import { createResponse } from "../../responseHandler";
 import { productModel } from "../../vendorPanel/product/product.module";
 import { userOrderModel } from "../../user/order/order.module";
+import vendorModel from '../../vendorPanel/auth/auth.module'
 
 
 //------- Vendor Approve -----------------//
+
+export const adminViewVendor = async(req:Request,res:Response):Promise<void>=>{
+    try {
+        const vendors = await vendorModel.find({role:'vendor'}).sort({'createdAt':-1});
+        createResponse(res, 200, true, "All Vendors", vendors);
+        
+    } catch (error) {
+        createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
+        return;
+    }
+}
+
 export const adminVendorApprove = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = req.params.id;
@@ -37,6 +50,17 @@ export const adminVendorApprove = async (req: Request, res: Response): Promise<v
         return;
     }
 };
+
+export const vendorAllProducts = async(req:Request,res:Response):Promise<void>=>{
+    try {
+        const products = await productModel.find({}).sort({'createdAt':-1});
+        createResponse(res, 200, true, "All Vendor`s Products", products);
+        
+    } catch (error) {
+        createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
+        return;
+    }
+}
 
 export const vendorProductStatus = async (req: Request, res: Response): Promise<void> => {
     try {

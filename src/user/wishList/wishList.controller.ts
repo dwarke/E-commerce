@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import {userWishlistModel} from './wishList.module'
 import { productModel } from "../../vendorPanel/product/product.module";
 import { createResponse } from "../../responseHandler";
+import vendorRegisterModel from '../../vendorPanel/auth/auth.module'
 import mongoose from "mongoose";
 
 
@@ -10,6 +11,14 @@ export const addWishlist = async (req: Request, res: Response): Promise<void> =>
     try {
         const id = req.params.id;
         const userId = req.user?._id;
+
+        const product = await productModel.findOne({ _id: id, status: 'approve' })
+        const vendorProduct = await vendorRegisterModel.findOne({_id:product?.vendorId, isBlocked:false})
+        
+        if (!product || !vendorProduct) {
+            createResponse(res, 404, false, "product Are not exist");
+            return
+        }
 
         const wishlist = await userWishlistModel.findOne({ userId });
         if (!wishlist) {

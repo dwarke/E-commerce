@@ -25,7 +25,7 @@ const addShoppingCard = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { productId, quantity } = req.body;
         const product = yield product_module_1.productModel.findOne({ _id: productId, status: 'approve' });
         const vendorProduct = yield auth_module_1.default.findOne({ _id: product === null || product === void 0 ? void 0 : product.vendorId, isBlocked: false });
-        if (!product && !vendorProduct) {
+        if (!product || !vendorProduct) {
             (0, responseHandler_1.createResponse)(res, 404, false, "product Are not exist");
             return;
         }
