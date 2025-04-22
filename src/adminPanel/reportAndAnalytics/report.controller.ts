@@ -5,7 +5,7 @@ import { createResponse } from "../../responseHandler";
 import { SalesReportRequestBody } from "./report.interface";
 
 
-export const adminSalesReport = async (req: Request<{}, {}, SalesReportRequestBody>, res: Response): Promise<void> => {
+export const salesReport = async (req: Request<{}, {}, SalesReportRequestBody>, res: Response): Promise<void> => {
     try {
         const { daily, weekly, monthly } = req.body
         const pipeline: any[] = [];

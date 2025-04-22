@@ -9,9 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCategory = exports.addCategory = void 0;
+exports.getCategory = exports.deleteCategory = exports.addCategory = void 0;
 const category_module_1 = require("./category.module");
 const responseHandler_1 = require("../../responseHandler");
+const product_module_1 = require("../../vendorPanel/product/product.module");
 const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { category } = req.body;
@@ -25,6 +26,20 @@ const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.addCategory = addCategory;
+const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const category = yield category_module_1.categoryModel.findOneAndDelete({ _id: id });
+        yield product_module_1.productModel.findOneAndDelete({ category: id });
+        (0, responseHandler_1.createResponse)(res, 200, true, "Category deleted", category);
+    }
+    catch (error) {
+        (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
+        return;
+    }
+    ;
+});
+exports.deleteCategory = deleteCategory;
 const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const category = yield category_module_1.categoryModel.find({});
@@ -34,6 +49,7 @@ const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
         return;
     }
+    ;
 });
 exports.getCategory = getCategory;
 //# sourceMappingURL=category.controller.js.map

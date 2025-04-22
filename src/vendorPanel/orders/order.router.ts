@@ -8,4 +8,4 @@ import { viewUserOrderList, userOrderStatus } from './order.controller';
 router.post('/viewUserOrderList', checkAuthorization, userBlocked, vendorRole, viewUserOrderList);
 router.post('/userOrderStatus/:id', checkAuthorization, userBlocked, vendorRole, userOrderStatus);
 
-export default router 
+export default router;   

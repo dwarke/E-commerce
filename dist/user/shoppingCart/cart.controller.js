@@ -17,6 +17,7 @@ const product_module_1 = require("../../vendorPanel/product/product.module");
 const cart_module_1 = __importDefault(require("./cart.module"));
 const responseHandler_1 = require("../../responseHandler");
 const auth_module_1 = __importDefault(require("../../vendorPanel/auth/auth.module"));
+const category_module_1 = require("../../adminPanel/category/category.module");
 const addShoppingCard = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -64,7 +65,11 @@ const getShoppingCard = (req, res) => __awaiter(void 0, void 0, void 0, function
     var _a;
     try {
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
-        const getCart = yield cart_module_1.default.find({ userId });
+        const category = yield category_module_1.categoryModel.find({});
+        const productView = yield product_module_1.productModel.find({ category: category.map((a) => a._id) });
+        console.log("productView-----", productView);
+        const getCart = yield cart_module_1.default.find({ userId, productId: productView.map((p) => p._id) });
+        console.log("getCart-----", getCart);
         if (!getCart) {
             (0, responseHandler_1.createResponse)(res, 404, false, "Cart are not exist!");
             return;

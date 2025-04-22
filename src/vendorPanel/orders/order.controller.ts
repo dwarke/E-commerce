@@ -16,19 +16,36 @@ export const viewUserOrderList = async (req: Request, res: Response): Promise<vo
                 }
             },
             {
+                $lookup:{
+                    from: "userregisters",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "usersDetails"
+                }
+            },
+            {
+                $unwind: '$usersDetails'
+            },
+            {
                 $group: {
                     _id: {
                         productId: "$products.productId",
                         userId: "$userId",
+                        name:"$usersDetails.name",
+                        address:"$usersDetails.address",
+                        phone:'$usersDetails.phone'
                     },
                     quantity: { $sum: "$products.quantity" },
-                    name: { $first: "$products.name" }
+                    name: { $first: "$products.name" },
                 }
             },
             {
                 $group: {
                     _id: "$_id.userId",
                     userId: { $first: "$_id.userId" },
+                    name: { $first: "$_id.name" },
+                    address: { $first: "$_id.address" },
+                    phone: { $first: "$_id.phone" },
                     products: {
                         $push: {
                             productId: "$_id.productId",
@@ -42,6 +59,9 @@ export const viewUserOrderList = async (req: Request, res: Response): Promise<vo
                 $project: {
                     _id: 0,
                     userId: 1,
+                    name: 1,
+                    address: 1,
+                    phone: 1,
                     products: 1
                 }
             }

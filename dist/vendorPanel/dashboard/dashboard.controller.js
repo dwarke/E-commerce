@@ -12,44 +12,56 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.adminDashboard = void 0;
-const auth_module_1 = __importDefault(require("../../vendorPanel/auth/auth.module"));
-const responseHandler_1 = require("../../responseHandler");
-const product_module_1 = require("../../vendorPanel/product/product.module");
+exports.penalDashboard = void 0;
 const order_module_1 = require("../../user/order/order.module");
-const adminDashboard = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const product_module_1 = require("../product/product.module");
+const responseHandler_1 = require("../../responseHandler");
+const mongoose_1 = __importDefault(require("mongoose"));
+const penalDashboard = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-        const [totalUsers, totalVendor, totalSale, activeUsers, productPer] = yield Promise.all([
-            yield auth_module_1.default.aggregate([
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
+        const product = yield product_module_1.productModel.find({ vendorId: userId });
+        const [totalProducts, revenue, productPer] = yield Promise.all([
+            yield product_module_1.productModel.aggregate([
                 {
-                    $match: { role: 'user' }
-                },
-            ]),
-            yield auth_module_1.default.aggregate([
-                {
-                    $match: { role: 'vendor' }
+                    $match: { vendorId: new mongoose_1.default.Types.ObjectId(userId) }
                 },
             ]),
             yield order_module_1.userOrderModel.aggregate([
-                { $unwind: '$products' },
+                {
+                    $unwind: '$products'
+                },
+                {
+                    $match: { 'products.vendorId': new mongoose_1.default.Types.ObjectId(userId) }
+                },
+                {
+                    $addFields: {
+                        totalSales: "$products.quantity",
+                    }
+                },
                 {
                     $group: {
-                        _id: null,
-                        totalSales: { $sum: '$products.quantity' }
+                        _id: {
+                            vendorId: '$products.vendorId'
+                        },
+                        totalSales: { $sum: "$totalSales" },
+                        totalAmount: { $sum: "$totalAmount" },
                     }
                 },
                 {
                     $project: {
                         _id: 0,
+                        vendorId: '$_id',
                         totalSales: 1,
+                        totalAmount: 1
                     }
                 }
             ]),
-            yield auth_module_1.default.aggregate([
-                { $match: { createdAt: { $gte: twentyFourHoursAgo } } }
-            ]),
             yield product_module_1.productModel.aggregate([
+                {
+                    $match: { vendorId: new mongoose_1.default.Types.ObjectId(userId) }
+                },
                 {
                     $lookup: {
                         from: "productreviews",
@@ -95,21 +107,21 @@ const adminDashboard = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 { $limit: 5 }
             ])
         ]);
-        console.log("totalUser------", totalUsers);
-        console.log("productPer------", productPer);
+        const overallTotals = revenue.reduce((acc, product) => {
+            acc.totalSale += product.totalSales;
+            acc.totalRevenue += product.totalAmount;
+            return acc;
+        }, { totalSale: 0, totalRevenue: 0 });
         (0, responseHandler_1.createResponse)(res, 200, true, "All product Sales", {
-            totalSale,
-            totalUsers: totalUsers.length,
-            totalVendor: totalVendor.length,
-            activeUsers: activeUsers.length,
+            revenue: overallTotals,
+            totalProducts: totalProducts.length,
             topProducts: productPer
         });
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
-        return;
+        ReadableStreamDefaultController;
     }
-    ;
 });
-exports.adminDashboard = adminDashboard;
+exports.penalDashboard = penalDashboard;
 //# sourceMappingURL=dashboard.controller.js.map

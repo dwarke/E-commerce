@@ -10,7 +10,7 @@ export const orderValidationSchema = Joi.object({
       }
       return value;
     }),
-
+  userName: Joi.string(),
   products: Joi.array()
     .items(
       Joi.object({

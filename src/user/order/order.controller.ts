@@ -12,6 +12,7 @@ export const addOrder = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.user?._id;  // Assuming user is authenticated
         console.log(userId);
+const users = await userRegisterModel.findOne({_id:userId});
 
         const { userAddress } = req.body;
 
@@ -65,6 +66,7 @@ export const addOrder = async (req: Request, res: Response): Promise<void> => {
 
         const newOrder = new userOrderModel({
             userId,
+            userName:users?.name,
             userAddress,                          
             products: cartItems,
             totalAmount,

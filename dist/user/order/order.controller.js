@@ -24,6 +24,7 @@ const addOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
         console.log(userId);
+        const users = yield auth_module_1.default.findOne({ _id: userId });
         const { userAddress } = req.body;
         const cartItems = yield cart_module_1.default.aggregate([
             { $match: { userId: new mongoose_1.default.Types.ObjectId(userId) } },
@@ -72,6 +73,7 @@ const addOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         ;
         const newOrder = new order_module_1.userOrderModel({
             userId,
+            userName: users === null || users === void 0 ? void 0 : users.name,
             userAddress,
             products: cartItems,
             totalAmount,

@@ -79,7 +79,10 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
 export const viewProduct = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.user?._id;
-        const productView = await productModel.find({ userId });
+        const category = await categoryModel.find({})
+        const productView = await productModel.find({ vendorId: userId, category: category.map((a)=> a._id) });
+        console.log("productView------",productView);
+        
         createResponse(res, 200, true, "your order All product", productView);
 
     } catch (error) {

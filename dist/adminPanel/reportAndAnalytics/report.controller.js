@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.adminSalesReport = void 0;
+exports.salesReport = void 0;
 const order_module_1 = require("../../user/order/order.module");
 const responseHandler_1 = require("../../responseHandler");
-const adminSalesReport = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const salesReport = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { daily, weekly, monthly } = req.body;
         const pipeline = [];
@@ -84,5 +84,5 @@ const adminSalesReport = (req, res) => __awaiter(void 0, void 0, void 0, functio
         return;
     }
 });
-exports.adminSalesReport = adminSalesReport;
+exports.salesReport = salesReport;
 //# sourceMappingURL=report.controller.js.map

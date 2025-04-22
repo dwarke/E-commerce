@@ -12,12 +12,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.adminVieWFeedback = exports.adminUserOrderView = exports.adminUserUpdate = exports.adminUserBlocked = exports.adminUserBlockUnblock = void 0;
+exports.viewFeedback = exports.userOrderView = exports.userUpdate = exports.userBlocked = exports.userBlockUnblock = exports.allUser = void 0;
 const auth_module_1 = __importDefault(require("../../vendorPanel/auth/auth.module"));
 const order_module_1 = require("../../user/order/order.module");
 const responseHandler_1 = require("../../responseHandler");
 const feedback_module_1 = require("../../user/feedback/feedback.module");
-const adminUserBlockUnblock = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const allUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const users = yield auth_module_1.default.find({ role: 'user' });
+        (0, responseHandler_1.createResponse)(res, 200, true, "All users", users);
+    }
+    catch (error) {
+        (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
+        return;
+    }
+    ;
+});
+exports.allUser = allUser;
+const userBlockUnblock = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;
         const user = yield auth_module_1.default.findOne({ _id: id });
@@ -41,8 +53,8 @@ const adminUserBlockUnblock = (req, res) => __awaiter(void 0, void 0, void 0, fu
         return;
     }
 });
-exports.adminUserBlockUnblock = adminUserBlockUnblock;
-const adminUserBlocked = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.userBlockUnblock = userBlockUnblock;
+const userBlocked = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userBlocked = yield auth_module_1.default.find({ isBlocked: true });
         (0, responseHandler_1.createResponse)(res, 200, true, "This users are Blocked", userBlocked);
@@ -52,8 +64,8 @@ const adminUserBlocked = (req, res) => __awaiter(void 0, void 0, void 0, functio
         return;
     }
 });
-exports.adminUserBlocked = adminUserBlocked;
-const adminUserUpdate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.userBlocked = userBlocked;
+const userUpdate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;
         const { name, email, address, phone, role } = req.body;
@@ -65,8 +77,8 @@ const adminUserUpdate = (req, res) => __awaiter(void 0, void 0, void 0, function
         return;
     }
 });
-exports.adminUserUpdate = adminUserUpdate;
-const adminUserOrderView = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.userUpdate = userUpdate;
+const userOrderView = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userOrderData = yield order_module_1.userOrderModel.aggregate([
             {
@@ -77,7 +89,8 @@ const adminUserOrderView = (req, res) => __awaiter(void 0, void 0, void 0, funct
                     _id: {
                         productId: '$products.productId',
                         name: '$products.name',
-                        userId: '$userId'
+                        userId: '$userId',
+                        userName: '$userName'
                     },
                     quantity: { $sum: '$products.quantity' },
                     totalAmount: { $sum: '$products.totalPrice' },
@@ -90,6 +103,7 @@ const adminUserOrderView = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 $group: {
                     _id: '$_id.userId',
                     userId: { $first: '$_id.userId' },
+                    userName: { $first: '$_id.userName' },
                     products: {
                         $push: {
                             productId: '$_id.productId',
@@ -107,6 +121,7 @@ const adminUserOrderView = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 $project: {
                     _id: 0,
                     userId: 1,
+                    userName: 1,
                     products: 1
                 }
             }
@@ -120,10 +135,33 @@ const adminUserOrderView = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
     ;
 });
-exports.adminUserOrderView = adminUserOrderView;
-const adminVieWFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.userOrderView = userOrderView;
+const viewFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const alreadyFeedBack = yield feedback_module_1.feedbackModel.find({});
+        const alreadyFeedBack = yield feedback_module_1.feedbackModel.aggregate([
+            {
+                $lookup: {
+                    from: "userregisters",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "usersDetails"
+                }
+            },
+            {
+                $unwind: '$usersDetails'
+            },
+            {
+                $project: {
+                    _id: 0,
+                    userId: 1,
+                    feedback: 1,
+                    name: '$usersDetails.name',
+                    address: '$usersDetails.address',
+                    phone: '$usersDetails.phone',
+                    profile: '$usersDetails.profile',
+                }
+            }
+        ]);
         (0, responseHandler_1.createResponse)(res, 200, true, "All Website`s Feedback", alreadyFeedBack);
     }
     catch (error) {
@@ -132,5 +170,5 @@ const adminVieWFeedback = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
     ;
 });
-exports.adminVieWFeedback = adminVieWFeedback;
+exports.viewFeedback = viewFeedback;
 //# sourceMappingURL=userManage.controller.js.map

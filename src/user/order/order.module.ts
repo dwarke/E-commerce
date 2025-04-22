@@ -6,6 +6,10 @@ const userOrderSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "userRegister",
     },
+    userName:{
+        type: String,
+        required: true 
+    },
     products:[{
         cartId: String,
         productId: { type: mongoose.Schema.Types.ObjectId, ref: "vendorProduct" },

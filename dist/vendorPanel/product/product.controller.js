@@ -81,7 +81,9 @@ const viewProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     var _a;
     try {
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
-        const productView = yield product_module_1.productModel.find({ userId });
+        const category = yield category_module_1.categoryModel.find({});
+        const productView = yield product_module_1.productModel.find({ vendorId: userId, category: category.map((a) => a._id) });
+        console.log("productView------", productView);
         (0, responseHandler_1.createResponse)(res, 200, true, "your order All product", productView);
     }
     catch (error) {

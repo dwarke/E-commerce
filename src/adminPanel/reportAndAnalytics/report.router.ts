@@ -1,11 +1,11 @@
 import { Router } from "express";
 const router = Router();
 
-import { adminSalesReport } from './report.controller'
+import { salesReport } from './report.controller'
 import { adminRole } from "../auth/auth.middleware";
 import { checkAuthorization } from "../auth/auth.middleware";
 
-router.post('/adminSalesReport', checkAuthorization, adminRole, adminSalesReport );
+router.post('/salesReport', checkAuthorization, adminRole, salesReport );
 
 
 export default router;

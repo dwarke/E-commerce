@@ -11,6 +11,7 @@ import adminReportAndAnalytics from './adminPanel/reportAndAnalytics/report.rout
 
 //  vendor
 import vendorRegister from './vendorPanel/auth/auth.router'
+import vendorPenalDashboard from './vendorPanel/dashboard/dashboard.router'
 import vendorProductsOrders from './vendorPanel/orders/order.router'
 import vendorProducts from './vendorPanel/product/product.router'
 import vendorProductsRating from './vendorPanel/productRating/rating.router'
@@ -37,6 +38,7 @@ router.use('/admin/usersManagement',adminUsersManagement);
 
 //    ---------- vendorPanel --------
 router.use('/vendor',vendorRegister);
+router.use('/vendor/dashboard',vendorPenalDashboard);
 router.use('/vendor/productOrders',vendorProductsOrders);
 router.use('/vendor/products',vendorProducts);
 router.use('/vendor/productRating',vendorProductsRating);

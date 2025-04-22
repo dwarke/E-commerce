@@ -12,6 +12,7 @@ const vendor_router_1 = __importDefault(require("./adminPanel/vendor/vendor.rout
 const userManage_router_1 = __importDefault(require("./adminPanel/users/userManage.router"));
 const report_router_1 = __importDefault(require("./adminPanel/reportAndAnalytics/report.router"));
 const auth_router_2 = __importDefault(require("./vendorPanel/auth/auth.router"));
+const dashboard_router_2 = __importDefault(require("./vendorPanel/dashboard/dashboard.router"));
 const order_router_1 = __importDefault(require("./vendorPanel/orders/order.router"));
 const product_router_1 = __importDefault(require("./vendorPanel/product/product.router"));
 const rating_router_1 = __importDefault(require("./vendorPanel/productRating/rating.router"));
@@ -30,6 +31,7 @@ router.use('/admin/category', category_router_1.default);
 router.use('/admin/vendorsManagement', vendor_router_1.default);
 router.use('/admin/usersManagement', userManage_router_1.default);
 router.use('/vendor', auth_router_2.default);
+router.use('/vendor/dashboard', dashboard_router_2.default);
 router.use('/vendor/productOrders', order_router_1.default);
 router.use('/vendor/products', product_router_1.default);
 router.use('/vendor/productRating', rating_router_1.default);

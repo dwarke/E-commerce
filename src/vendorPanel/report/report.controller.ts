@@ -67,7 +67,30 @@ export const vendorProductReport = async (req: Request, res: Response): Promise<
 
 export const getWebsiteFeedback = async (req: Request, res: Response): Promise<void> => {
     try {
-        const alreadyFeedBack = await feedbackModel.find({});
+        const alreadyFeedBack = await feedbackModel.find([
+            {
+                $lookup: {
+                    from: "userregisters",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "usersDetails"
+                }
+            },
+            {
+                $unwind: '$usersDetails'
+            },
+            {
+                $project: {
+                    _id: 0,
+                    userId: 1,
+                    feedback:1,
+                    name: '$usersDetails.name',
+                    address: '$usersDetails.address',
+                    phone: '$usersDetails.phone',
+                    profile: '$usersDetails.profile',
+                }
+            }
+        ]);
         createResponse(res, 200, true, "All Website`s Feedback", alreadyFeedBack);
 
     } catch (error) {

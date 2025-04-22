@@ -14,6 +14,7 @@ exports.orderValidationSchema = joi_1.default.object({
         }
         return value;
     }),
+    userName: joi_1.default.string(),
     products: joi_1.default.array()
         .items(joi_1.default.object({
         cartId: joi_1.default.string().required(),

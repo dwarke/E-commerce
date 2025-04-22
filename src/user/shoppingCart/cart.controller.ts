@@ -3,6 +3,7 @@ import { productModel } from '../../vendorPanel/product/product.module'
 import userShoppingModel from './cart.module'
 import { createResponse } from "../../responseHandler";
 import userRegisterModel from '../../vendorPanel/auth/auth.module'
+import { categoryModel } from "../../adminPanel/category/category.module";
 
 
 
@@ -56,16 +57,21 @@ export const deleteShoppingCard = async (req: Request, res: Response): Promise<v
 export const getShoppingCard = async(req:Request,res:Response):Promise<void>=>{
     try {
         const userId = req.user?._id;
-        const getCart = await userShoppingModel.find({userId});
+        const category = await categoryModel.find({})
+        const productView = await productModel.find({ category: category.map((a)=> a._id) });
+        console.log("productView-----", productView);
+        const getCart = await userShoppingModel.find({userId, productId:productView.map((p)=>p._id)});
+        console.log("getCart-----", getCart);
+
         if(!getCart){
             createResponse(res, 404, false, "Cart are not exist!");
-            return
+            return;
         };
         createResponse(res, 200, true, "All your Shopping Carts", getCart);
         
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
-        return
+        return;
     }
 }
 

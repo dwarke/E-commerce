@@ -8,7 +8,7 @@ import vendorModel from '../../vendorPanel/auth/auth.module'
 
 //------- Vendor Approve -----------------//
 
-export const adminViewVendor = async(req:Request,res:Response):Promise<void>=>{
+export const viewAllVendor = async(req:Request,res:Response):Promise<void>=>{
     try {
         const vendors = await vendorModel.find({role:'vendor'}).sort({'createdAt':-1});
         createResponse(res, 200, true, "All Vendors", vendors);
@@ -19,7 +19,7 @@ export const adminViewVendor = async(req:Request,res:Response):Promise<void>=>{
     }
 }
 
-export const adminVendorApprove = async (req: Request, res: Response): Promise<void> => {
+export const vendorApprove = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = req.params.id;
         const { status } = req.body;

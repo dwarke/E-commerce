@@ -75,7 +75,30 @@ const vendorProductReport = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.vendorProductReport = vendorProductReport;
 const getWebsiteFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const alreadyFeedBack = yield feedback_module_1.feedbackModel.find({});
+        const alreadyFeedBack = yield feedback_module_1.feedbackModel.find([
+            {
+                $lookup: {
+                    from: "userregisters",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "usersDetails"
+                }
+            },
+            {
+                $unwind: '$usersDetails'
+            },
+            {
+                $project: {
+                    _id: 0,
+                    userId: 1,
+                    feedback: 1,
+                    name: '$usersDetails.name',
+                    address: '$usersDetails.address',
+                    phone: '$usersDetails.phone',
+                    profile: '$usersDetails.profile',
+                }
+            }
+        ]);
         (0, responseHandler_1.createResponse)(res, 200, true, "All Website`s Feedback", alreadyFeedBack);
     }
     catch (error) {
