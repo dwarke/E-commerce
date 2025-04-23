@@ -43,7 +43,7 @@ export const userBlockUnblock = async (req: Request, res: Response): Promise<voi
 export const userBlocked = async (req: Request, res: Response): Promise<void> => {
     try {
         const userBlocked = await userRegisterModel.find({ isBlocked: true });
-        createResponse(res, 200, true, "This users are Blocked", userBlocked);
+        createResponse(res, 200, true, "This users The Blocked", userBlocked);
 
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
@@ -56,7 +56,7 @@ export const userUpdate = async (req: Request, res: Response): Promise<void> => 
         const id = req.params.id;
         const { name, email, address, phone, role } = req.body
         const profileUpdate = await userRegisterModel.findOneAndUpdate({ _id: id }, { name, email, address, phone, role }, { new: true })
-        createResponse(res, 200, true, "User Profile Successfully Updated", profileUpdate)
+        createResponse(res, 200, true, "User Profile are Updated", profileUpdate)
 
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);

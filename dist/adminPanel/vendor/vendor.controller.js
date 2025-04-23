@@ -67,7 +67,7 @@ exports.vendorApprove = vendorApprove;
 const vendorAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield product_module_1.productModel.find({}).sort({ 'createdAt': -1 });
-        (0, responseHandler_1.createResponse)(res, 200, true, "All Vendor`s Products", products);
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Products", products);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
@@ -80,7 +80,7 @@ const vendorProductStatus = (req, res) => __awaiter(void 0, void 0, void 0, func
         const id = req.params.id;
         const { status } = req.body;
         const vendorProduct = yield product_module_1.productModel.findOneAndUpdate({ _id: id }, { status }, { new: true });
-        (0, responseHandler_1.createResponse)(res, 200, true, "All product Sales", vendorProduct);
+        (0, responseHandler_1.createResponse)(res, 200, true, `this Product are ${status} `, vendorProduct);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);

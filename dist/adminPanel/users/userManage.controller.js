@@ -57,7 +57,7 @@ exports.userBlockUnblock = userBlockUnblock;
 const userBlocked = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userBlocked = yield auth_module_1.default.find({ isBlocked: true });
-        (0, responseHandler_1.createResponse)(res, 200, true, "This users are Blocked", userBlocked);
+        (0, responseHandler_1.createResponse)(res, 200, true, "This users The Blocked", userBlocked);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
@@ -70,7 +70,7 @@ const userUpdate = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const id = req.params.id;
         const { name, email, address, phone, role } = req.body;
         const profileUpdate = yield auth_module_1.default.findOneAndUpdate({ _id: id }, { name, email, address, phone, role }, { new: true });
-        (0, responseHandler_1.createResponse)(res, 200, true, "User Profile Successfully Updated", profileUpdate);
+        (0, responseHandler_1.createResponse)(res, 200, true, "User Profile are Updated", profileUpdate);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);

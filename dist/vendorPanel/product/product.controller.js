@@ -41,7 +41,7 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const id = req.params.id;
         const product = yield product_module_1.productModel.findOneAndDelete({ _id: id });
-        (0, responseHandler_1.createResponse)(res, 200, true, "Successfully product Deleted", product);
+        (0, responseHandler_1.createResponse)(res, 200, true, "product are Deleted", product);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
@@ -69,7 +69,7 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             }
         }
         const productUpdate = yield product_module_1.productModel.findByIdAndUpdate({ _id: id }, { name, description, price, stock, category, images: imagePaths }, { new: true });
-        (0, responseHandler_1.createResponse)(res, 200, true, "Successfully product Updated", productUpdate);
+        (0, responseHandler_1.createResponse)(res, 200, true, "Product Successfully Updated", productUpdate);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
@@ -84,7 +84,7 @@ const viewProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const category = yield category_module_1.categoryModel.find({});
         const productView = yield product_module_1.productModel.find({ vendorId: userId, category: category.map((a) => a._id) });
         console.log("productView------", productView);
-        (0, responseHandler_1.createResponse)(res, 200, true, "your order All product", productView);
+        (0, responseHandler_1.createResponse)(res, 200, true, "All product", productView);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);

@@ -33,7 +33,7 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
     try {
         const id = req.params.id
         const product = await productModel.findOneAndDelete({ _id: id });
-        createResponse(res, 200, true, "Successfully product Deleted", product);
+        createResponse(res, 200, true, "product are Deleted", product);
 
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
@@ -68,7 +68,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
             { name, description, price, stock, category, images: imagePaths },
             { new: true }
         );
-        createResponse(res, 200, true, "Successfully product Updated", productUpdate);
+        createResponse(res, 200, true, "Product Successfully Updated", productUpdate);
 
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
@@ -83,7 +83,7 @@ export const viewProduct = async (req: Request, res: Response): Promise<void> =>
         const productView = await productModel.find({ vendorId: userId, category: category.map((a)=> a._id) });
         console.log("productView------",productView);
         
-        createResponse(res, 200, true, "your order All product", productView);
+        createResponse(res, 200, true, "All product", productView);
 
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);

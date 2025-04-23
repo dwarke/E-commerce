@@ -67,7 +67,7 @@ const getRatingReviews = (req, res) => __awaiter(void 0, void 0, void 0, functio
             (0, responseHandler_1.createResponse)(res, 404, false, "Your product not exist");
             return;
         }
-        (0, responseHandler_1.createResponse)(res, 200, true, "product Review and Rating ", productReview);
+        (0, responseHandler_1.createResponse)(res, 200, true, "Review and Rating of the Products ", productReview);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);

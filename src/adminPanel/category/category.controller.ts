@@ -34,7 +34,7 @@ export const deleteCategory = async(req:Request,res:Response):Promise<void>=>{
 export const getCategory = async(req:Request,res:Response):Promise<void>=>{
     try {
         const category = await categoryModel.find({});
-        createResponse(res, 200, true, "Successfully category Added", category);
+        createResponse(res, 200, true, "All Categories ", category);
         
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);

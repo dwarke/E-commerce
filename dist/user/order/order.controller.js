@@ -110,7 +110,7 @@ const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("userId-----", userId);
         const allOrder = yield order_module_1.userOrderModel.find({ userId });
         console.log("userId-----", allOrder);
-        (0, responseHandler_1.createResponse)(res, 200, true, "Order placed successfully!", allOrder);
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Your Orders", allOrder);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);

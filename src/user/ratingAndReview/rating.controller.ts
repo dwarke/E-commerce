@@ -56,7 +56,7 @@ export const getRatingReviews = async(req:Request,res:Response):Promise<void>=>{
             createResponse(res, 404, false, "Your product not exist");
             return;
         }
-        createResponse(res, 200, true, "product Review and Rating ", productReview);
+        createResponse(res, 200, true, "Review and Rating of the Products ", productReview);
 
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);

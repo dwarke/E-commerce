@@ -106,7 +106,7 @@ export const penalDashboard = async (req: Request, res: Response): Promise<void>
             },
             { totalSale: 0, totalRevenue: 0 }
         );
-        createResponse(res, 200, true, "All product Sales", {
+        createResponse(res, 200, true, "All Activities", {
             revenue: overallTotals,
             totalProducts: totalProducts.length,
             topProducts: productPer

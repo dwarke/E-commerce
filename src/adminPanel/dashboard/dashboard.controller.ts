@@ -86,7 +86,7 @@ export const adminDashboard = async (req: Request, res: Response): Promise<void>
         console.log("totalUser------", totalUsers);
         console.log("productPer------", productPer);
 
-        createResponse(res, 200, true, "All product Sales", {
+        createResponse(res, 200, true, "All Activities", {
             totalSale,
             totalUsers:totalUsers.length,
             totalVendor:totalVendor.length,

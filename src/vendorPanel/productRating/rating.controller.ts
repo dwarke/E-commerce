@@ -45,4 +45,4 @@ export const viewProductRating = async (req: Request, res: Response): Promise<vo
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
         return
     }
-}
+};

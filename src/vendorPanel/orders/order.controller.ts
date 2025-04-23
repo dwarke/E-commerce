@@ -67,7 +67,7 @@ export const viewUserOrderList = async (req: Request, res: Response): Promise<vo
             }
         ]);
         console.log("orders----------", orders);
-        createResponse(res, 200, true, "Successfully product added", orders);
+        createResponse(res, 200, true, "All Products Order", orders);
         return
 
     } catch (error) {

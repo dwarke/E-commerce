@@ -54,7 +54,7 @@ export const vendorApprove = async (req: Request, res: Response): Promise<void> 
 export const vendorAllProducts = async(req:Request,res:Response):Promise<void>=>{
     try {
         const products = await productModel.find({}).sort({'createdAt':-1});
-        createResponse(res, 200, true, "All Vendor`s Products", products);
+        createResponse(res, 200, true, "All Products", products);
         
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);
@@ -67,7 +67,7 @@ export const vendorProductStatus = async (req: Request, res: Response): Promise<
         const id = req.params.id;
         const { status } = req.body
         const vendorProduct = await productModel.findOneAndUpdate({ _id: id }, { status }, { new: true });
-        createResponse(res, 200, true, "All product Sales", vendorProduct);
+        createResponse(res, 200, true, `this Product are ${status} `, vendorProduct);
 
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);

@@ -97,7 +97,7 @@ const adminDashboard = (req, res) => __awaiter(void 0, void 0, void 0, function*
         ]);
         console.log("totalUser------", totalUsers);
         console.log("productPer------", productPer);
-        (0, responseHandler_1.createResponse)(res, 200, true, "All product Sales", {
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Activities", {
             totalSale,
             totalUsers: totalUsers.length,
             totalVendor: totalVendor.length,

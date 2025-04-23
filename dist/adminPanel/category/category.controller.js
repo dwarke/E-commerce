@@ -43,7 +43,7 @@ exports.deleteCategory = deleteCategory;
 const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const category = yield category_module_1.categoryModel.find({});
-        (0, responseHandler_1.createResponse)(res, 200, true, "Successfully category Added", category);
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Categories ", category);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);

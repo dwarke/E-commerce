@@ -146,7 +146,7 @@ export const getOrders = async(req:Request,res:Response):Promise<void>=>{
         
         const allOrder = await userOrderModel.find({userId});
         console.log("userId-----",allOrder);
-        createResponse(res, 200, true, "Order placed successfully!", allOrder);
+        createResponse(res, 200, true, "All Your Orders", allOrder);
         
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);

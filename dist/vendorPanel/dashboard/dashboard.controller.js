@@ -112,7 +112,7 @@ const penalDashboard = (req, res) => __awaiter(void 0, void 0, void 0, function*
             acc.totalRevenue += product.totalAmount;
             return acc;
         }, { totalSale: 0, totalRevenue: 0 });
-        (0, responseHandler_1.createResponse)(res, 200, true, "All product Sales", {
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Activities", {
             revenue: overallTotals,
             totalProducts: totalProducts.length,
             topProducts: productPer

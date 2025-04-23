@@ -27,7 +27,7 @@ export const getFeedback = async(req:Request,res:Response):Promise<void>=>{
     try {
         const userId = req.user?._id
         const alreadyFeedBack = await feedbackModel.findOne({ userId });
-        createResponse(res, 200, true, "Thank you for providing Feedback on the Website.", alreadyFeedBack);
+        createResponse(res, 200, true, "Your website`s feedBack", alreadyFeedBack);
         
     } catch (error) {
         createResponse(res, 500, false, "Failed to fetch User", null, (error as Error).message);

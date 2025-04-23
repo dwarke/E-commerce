@@ -79,7 +79,7 @@ const viewUserOrderList = (req, res) => __awaiter(void 0, void 0, void 0, functi
             }
         ]);
         console.log("orders----------", orders);
-        (0, responseHandler_1.createResponse)(res, 200, true, "Successfully product added", orders);
+        (0, responseHandler_1.createResponse)(res, 200, true, "All Products Order", orders);
         return;
     }
     catch (error) {

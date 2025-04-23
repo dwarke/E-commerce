@@ -9,4 +9,4 @@ import { vendorProductReport, getWebsiteFeedback } from './report.controller';
 router.post('/vendorProductReport', checkAuthorization, userBlocked, vendorRole, vendorProductReport);
 router.post('/getWebsiteFeedback', checkAuthorization, userBlocked, vendorRole, getWebsiteFeedback);
 
-export default router 
+export default router;

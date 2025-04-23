@@ -38,7 +38,7 @@ const getFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
         const alreadyFeedBack = yield feedback_module_1.feedbackModel.findOne({ userId });
-        (0, responseHandler_1.createResponse)(res, 200, true, "Thank you for providing Feedback on the Website.", alreadyFeedBack);
+        (0, responseHandler_1.createResponse)(res, 200, true, "Your website`s feedBack", alreadyFeedBack);
     }
     catch (error) {
         (0, responseHandler_1.createResponse)(res, 500, false, "Failed to fetch User", null, error.message);
